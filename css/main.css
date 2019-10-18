@@ -7,8 +7,8 @@
 
 #solution-area {
 	border: 2px solid blue;
-	width: 270px;
-	height: 270px;
+	width: 420px;
+	height: 420px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -18,24 +18,20 @@
 	box-sizing: border-box;
 	border: 1px solid white;
 	background-color: #eeeeee;
-	width: 90px;
-	height: 90px;
 }
 
 #puzzles-area {
 	margin-left: 50px;
 	border: 2px solid green;
 	display: flex;
-	width: 270px;
-	height: 270px;
+	width: 420px;
+	height: 420px;
 	flex-direction: column;
 	flex-wrap: wrap;
 }
 
 .playable {
 	box-sizing: border-box;
-	width: 90px;
-	height: 90px;
 	background-color: #cccccc;
 	border: 1px solid white;
 }
@@ -48,3 +44,27 @@
 	border: 2px solid red;
 }
 
+.s4 {
+	width: 210px;
+	height: 210px;
+}
+
+.s9 {
+	width: 140px;
+	height: 140px;
+}
+
+.s25 {
+	width: 84px;
+	height: 84px;
+}
+
+.s36 {
+	width: 70px;
+	height: 70px;
+}
+
+.s49 {
+	width: 60px;
+	height: 60px;
+}

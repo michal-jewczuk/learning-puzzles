@@ -14,31 +14,18 @@ MainModule = {
 	checkIfCorrect: (target, child) => {
 		const targetId = MainModule.extractId(target.id);
 		const childId = MainModule.extractId(child.id);
-		if (targetId === childId) {
-			MainModule.applyCorrect(child);
-		} else {
-			MainModule.applyIncorrect(child);
-		}
-	},
-
-	applyCorrect: (element) => {
-		element.classList.remove('incorrect');
-		element.classList.add('correct');
-	},
-
-	applyIncorrect: (element) => {
-		element.classList.remove('correct');
-		element.classList.add('incorrect');
-	},
-
-	applyNone: (element) => {
-		element.classList.remove('correct');
-		element.classList.remove('incorrect');
+		return targetId === childId;
 	},
 
 	extractId: (name) => {
 		return parseInt(name.slice(1));
 	},
+
+	showGameOver: () => {
+		if (GameModule.checkIfCompleted()) {
+			console.log('completed');
+		}
+	}
 
 
 };
@@ -54,7 +41,7 @@ GameModule = {
 	createTargetGrid: (count) => {
 		let html = '';
 		for (let i = 1; i <= count; i++) {
-			html += '<div class="' + solutionClass + '" id="b' + i + '"></div>';
+			html += '<div class="' + solutionClass + ' s' + count + '" id="b' + i + '"></div>';
 
 		}
 		targetArea.innerHTML = html;
@@ -64,18 +51,38 @@ GameModule = {
 		const puzzles = new Array();
 		let html = '';
 		for (let i = 1; i <= count; i++) {
-			puzzles.push(GameModule.createPuzzle(i));
+			puzzles.push(GameModule.createPuzzle(i, count));
 
 		}
 		puzzles.sort(() => Math.random() - 0.5);
 		puzzleArea.innerHTML = puzzles.reduce((e1, e2) => e1 + e2);
 	},
 
-	createPuzzle: (id) => {
-		let html = '<div class="' + puzzleClass + '" id="p' + id + '" draggable="true">';
-		html += '<p>element #' + id + '</p>';
+	createPuzzle: (id, count) => {
+		let html = '<div class="' + puzzleClass + ' s' + count + '" id="p' + id + '" draggable="true">';
+		html += '<p>#' + id + '</p>';
 		html += '</div>';
 		return html;
+	},
+
+	checkIfCompleted: () => {
+		let result = true;
+		const backgrounds = Array.from(document.getElementsByClassName(solutionClass));
+
+		backgrounds.forEach( (bg) => {
+			const children = Array.from(bg.children);
+			if (children.length === 0) {
+				result = false;
+			} else {
+				const backgroundId = MainModule.extractId(bg.id);
+				const childId = MainModule.extractId(children[0].id);
+				if (backgroundId !== childId) {
+					result = false;
+				}
+			}	
+		});
+
+		return result;
 	}
 
 	
@@ -117,13 +124,37 @@ UIModule = {
 			return true;
 		}
 
-		if (ev.target.className === solutionClass) {
+		if (ev.target.className.startsWith(solutionClass)) {
 			ev.target.appendChild(child);
-			MainModule.checkIfCorrect(ev.target, child);
+			UIModule.applyStatus(child, MainModule.checkIfCorrect(ev.target, child));
+			MainModule.showGameOver();
 		} else if (ev.target.id === 'puzzles-area') {
 			ev.target.appendChild(child);
-			MainModule.applyNone(child);
+			UIModule.applyNone(child);
 		}
+	},
+
+	applyStatus: (element, correct) => {
+		if (correct) {
+			UIModule.applyCorrect(element);
+		} else {
+			UIModule.applyIncorrect(element);
+		}
+	},
+
+	applyCorrect: (element) => {
+		element.classList.remove('incorrect');
+		element.classList.add('correct');
+	},
+
+	applyIncorrect: (element) => {
+		element.classList.remove('correct');
+		element.classList.add('incorrect');
+	},
+
+	applyNone: (element) => {
+		element.classList.remove('correct');
+		element.classList.remove('incorrect');
 	}
 
 };
