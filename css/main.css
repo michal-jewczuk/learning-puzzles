@@ -5,7 +5,7 @@
 	flex-wrap: nowrap;
 }
 
-#target-area {
+#solution-area {
 	border: 2px solid blue;
 	width: 270px;
 	height: 270px;
@@ -14,9 +14,10 @@
 	flex-wrap: wrap;
 }
 
-.main-area-background {
+.solution-background {
 	box-sizing: border-box;
-	border: 1px solid green;
+	border: 1px solid white;
+	background-color: #eeeeee;
 	width: 90px;
 	height: 90px;
 }
@@ -36,7 +37,14 @@
 	width: 90px;
 	height: 90px;
 	background-color: #cccccc;
-	border: 1px solid #000000;
+	border: 1px solid white;
 }
 
+.correct {
+	border: 2px solid green;
+}
+
+.incorrect {
+	border: 2px solid red;
+}
 
