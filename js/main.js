@@ -5,11 +5,15 @@ const solutionClass = 'solution-background';
 const puzzleClass = 'playable';
 const newGameButton = document.getElementById('new-game');
 const resetButton = document.getElementById('reset');
+const infoWinner = document.getElementById('info-winner');
+const infoLooser = document.getElementById('info-looser');
 
 MainModule = {
 
 	init: () => {
 		UIModule.registerEvents();
+		UIModule.hideElement(infoWinner);
+		UIModule.hideElement(infoLooser);
 	},
 
 	checkIfCorrect: (target, child) => {
@@ -26,9 +30,11 @@ MainModule = {
 		const gameStatus = GameModule.checkIfCompleted();
 		if (gameStatus[1]) {
 			if (gameStatus[0]) {
-				console.log('winner');
+				UIModule.showElement(infoWinner);
+				UIModule.hideElement(infoLooser);
 			} else {
-				console.log('incorrect');
+				UIModule.showElement(infoLooser);
+				UIModule.hideElement(infoWinner);
 			}
 		}
 	}
@@ -170,6 +176,16 @@ UIModule = {
 		element.classList.remove('incorrect');
 	},
 
+	hideElement: (element) => {
+		element.classList.remove('visible');
+		element.classList.add('invisible');
+	},
+
+	showElement: (element) => {
+		element.classList.remove('invisible');
+		element.classList.add('visible');
+	},
+
 	resetGameEvent: () => {
 		const backgrounds = Array.from(document.getElementsByClassName(solutionClass));
 		backgrounds.forEach( (bg) => {
@@ -181,6 +197,8 @@ UIModule = {
 				puzzleArea.appendChild(child);
 			}
 		});
+		UIModule.hideElement(infoWinner);
+		UIModule.hideElement(infoLooser);
 	},
 
 	newGameEvent: () => {

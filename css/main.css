@@ -78,6 +78,14 @@ body {
 	height: 60px;
 }
 
+.visible {
+	display: block;
+}
+
+.invisible {
+	display: none;
+}
+
 #options-section {
 	width: 600px;
 	background-color: #eeeeee;
@@ -87,3 +95,10 @@ body {
 	flex-wrap: nowrap;
 	justify-content: space-between;
 }
+
+#result-section {
+	width: 600px;
+	margin: 2em auto;
+	text-align: center;
+}
+
