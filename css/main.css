@@ -1,3 +1,7 @@
+body {
+	width: 900px;
+	margin: 0 auto;
+}
 
 #playable-section {
 	display: flex;
@@ -54,6 +58,11 @@
 	height: 140px;
 }
 
+.s16 {
+	width: 105px;
+	height: 105px;
+}
+
 .s25 {
 	width: 84px;
 	height: 84px;
@@ -67,4 +76,14 @@
 .s49 {
 	width: 60px;
 	height: 60px;
+}
+
+#options-section {
+	width: 600px;
+	background-color: #eeeeee;
+	margin: 2em auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
 }

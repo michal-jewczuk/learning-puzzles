@@ -3,11 +3,12 @@ const targetArea = document.getElementById('solution-area');
 const puzzleArea = document.getElementById('puzzles-area');
 const solutionClass = 'solution-background';
 const puzzleClass = 'playable';
+const newGameButton = document.getElementById('new-game');
+const resetButton = document.getElementById('reset');
 
 MainModule = {
 
 	init: () => {
-		GameModule.setUpGame();
 		UIModule.registerEvents();
 	},
 
@@ -22,8 +23,13 @@ MainModule = {
 	},
 
 	showGameOver: () => {
-		if (GameModule.checkIfCompleted()) {
-			console.log('completed');
+		const gameStatus = GameModule.checkIfCompleted();
+		if (gameStatus[1]) {
+			if (gameStatus[0]) {
+				console.log('winner');
+			} else {
+				console.log('incorrect');
+			}
 		}
 	}
 
@@ -32,10 +38,10 @@ MainModule = {
 
 GameModule = {
 
-	setUpGame: () => {
-		const count = 9;
+	setUpGame: (count) => {
 		GameModule.createTargetGrid(count);
 		GameModule.createPuzzles(count);
+		UIModule.registerGameEvents();
 	},
 
 	createTargetGrid: (count) => {
@@ -67,12 +73,14 @@ GameModule = {
 
 	checkIfCompleted: () => {
 		let result = true;
+		let fullBoard = true;
 		const backgrounds = Array.from(document.getElementsByClassName(solutionClass));
 
 		backgrounds.forEach( (bg) => {
 			const children = Array.from(bg.children);
 			if (children.length === 0) {
 				result = false;
+				fullBoard = false;
 			} else {
 				const backgroundId = MainModule.extractId(bg.id);
 				const childId = MainModule.extractId(children[0].id);
@@ -82,7 +90,7 @@ GameModule = {
 			}	
 		});
 
-		return result;
+		return [result, fullBoard];
 	}
 
 	
@@ -91,6 +99,11 @@ GameModule = {
 UIModule = {
 
 	registerEvents: () => {
+		resetButton.addEventListener('click', UIModule.resetGameEvent);
+		newGameButton.addEventListener('click', UIModule.newGameEvent);
+	},
+
+	registerGameEvents: () => {
 	        puzzleArea.addEventListener('drop', UIModule.drop);	
 		puzzleArea.addEventListener('dragover', UIModule.allowDrop);
 
@@ -155,6 +168,25 @@ UIModule = {
 	applyNone: (element) => {
 		element.classList.remove('correct');
 		element.classList.remove('incorrect');
+	},
+
+	resetGameEvent: () => {
+		const backgrounds = Array.from(document.getElementsByClassName(solutionClass));
+		backgrounds.forEach( (bg) => {
+			const children = Array.from(bg.children);
+			if (children.length > 0) {
+				const child = children[0];
+				bg.removeChild(child);
+				UIModule.applyNone(child);
+				puzzleArea.appendChild(child);
+			}
+		});
+	},
+
+	newGameEvent: () => {
+		const countIndex = document.getElementById('puzzles-count').selectedIndex;
+		const puzzlesCount = document.getElementsByTagName('option')[countIndex].value;
+		GameModule.setUpGame(puzzlesCount);
 	}
 
 };
