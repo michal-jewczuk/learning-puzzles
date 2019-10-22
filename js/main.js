@@ -18,7 +18,7 @@ const solutionClass = 'solution-background';
 const puzzleClass = 'playable';
 const mainDimension = 420;
 
-MainModule = {
+GameModule = {
 
 	init: () => {
 		UIModule.registerEvents();
@@ -26,80 +26,17 @@ MainModule = {
 	},
 
 	checkIfCorrect: (target, child) => {
-		const targetId = MainModule.extractId(target.id);
-		const childId = MainModule.extractId(child.id);
+		const targetId = GameModule.extractId(target.id);
+		const childId = GameModule.extractId(child.id);
 		return targetId === childId;
 	},
 
-	extractId: (name) => {
-		return parseInt(name.slice(1));
-	},
-
-
-};
-
-GameModule = {
-
 	setUpGame: (count) => {
 		UIModule.removeAllPuzzles();
-		GameModule.createTargetGrid(count);
-		GameModule.createPuzzles(count);
+		UIModule.createTargetGrid(count);
+		UIModule.createPuzzles(count);
 		UIModule.registerGameEvents();
 		UIModule.hideMessages();
-	},
-
-	createTargetGrid: (count) => {
-		let html = '';
-		for (let i = 1; i <= count; i++) {
-			html += '<div class="' + solutionClass + ' s' + count + '" id="b' + i + '"></div>';
-
-		}
-		targetArea.innerHTML = html;
-	},
-
-	createPuzzles: (count) => {
-		const image = document.getElementById('target-image');
-		const puzzles = new Array();
-		let html = '';
-		for (let i = 1; i <= count; i++) {
-			puzzles.push(GameModule.createPuzzle(i, count));
-		}
-		puzzles.sort(() => Math.random() - 0.5);
-		puzzles.forEach( (puzzle) => {
-			puzzleArea.innerHTML += puzzle.outerHTML;
-		});
-		GameModule.appendImagesToCanvases(image);
-		targetArea.style.backgroundImage = "url(" + image.src + ")";
-	},
-
-	createPuzzle: (id, count) => {
-		let imagePart = document.createElement('div');
-		imagePart.setAttribute('class', puzzleClass + ' s' + count);
-		imagePart.setAttribute('id', 'p' + id);
-		imagePart.setAttribute('draggable', true);
-		imagePart.appendChild(GameModule.createCanvasImage(count));
-		return imagePart;
-	},
-
-	createCanvasImage: (count) => {
-		const size = mainDimension / Math.sqrt(count);
-		let canvas = document.createElement('canvas');
-		canvas.setAttribute('width', size);
-		canvas.setAttribute('height', size);
-		return canvas;
-	},
-
-	appendImagesToCanvases: (image) => {
-		const divs = Array.from(puzzleArea.children);
-		const dimension = Math.sqrt(divs.length);
-		const size = mainDimension / dimension;
-		divs.forEach( (div) => {
-			const elId = MainModule.extractId(div.id);
-			const ctx = (div.children[0]).getContext('2d');
-			const row = Math.floor( (elId-1) / dimension);
-			const col = (elId - 1) % dimension;
-			ctx.drawImage(image, size * col, size * row, size, size, 0, 0, size, size);
-		});
 	},
 
 	checkIfCompleted: () => {
@@ -113,8 +50,8 @@ GameModule = {
 				result = false;
 				fullBoard = false;
 			} else {
-				const backgroundId = MainModule.extractId(bg.id);
-				const childId = MainModule.extractId(children[0].id);
+				const backgroundId = GameModule.extractId(bg.id);
+				const childId = GameModule.extractId(children[0].id);
 				if (backgroundId !== childId) {
 					result = false;
 				}
@@ -122,6 +59,10 @@ GameModule = {
 		});
 
 		return [result, fullBoard];
+	},
+
+	extractId: (name) => {
+		return parseInt(name.slice(1));
 	}
 
 	
@@ -130,13 +71,13 @@ GameModule = {
 UIModule = {
 
 	registerEvents: () => {
-		resetButton.addEventListener('click', UIModule.resetGameEvent);
-		newGameButton.addEventListener('click', UIModule.newGameEvent);
-		chooseButton.addEventListener('click', UIModule.chooseImageEvent);
-		cancelChooseButton.addEventListener('click', UIModule.cancelChooseEvent);
+		resetButton.addEventListener('click', EventModule.resetGameEvent);
+		newGameButton.addEventListener('click', EventModule.newGameEvent);
+		chooseButton.addEventListener('click', EventModule.chooseImageEvent);
+		cancelChooseButton.addEventListener('click', EventModule.cancelChooseEvent);
 		const images = Array.from(document.getElementsByClassName('image-to-choose'));
 		images.forEach( (image) => {
-			image.addEventListener('click', UIModule.imageClickedEvent);
+			image.addEventListener('click', EventModule.imageClickedEvent);
 		});
 		UIModule.hideElement(imagesArea);
 	},
@@ -155,6 +96,60 @@ UIModule = {
 		backgrounds.forEach( (bg) => {
 	        	bg.addEventListener('drop', UIModule.drop);	
 			bg.addEventListener('dragover', UIModule.allowDrop);
+		});
+	},
+
+	createTargetGrid: (count) => {
+		let html = '';
+		for (let i = 1; i <= count; i++) {
+			html += '<div class="' + solutionClass + ' s' + count + '" id="b' + i + '"></div>';
+
+		}
+		targetArea.innerHTML = html;
+	},
+
+	createPuzzles: (count) => {
+		const image = document.getElementById('target-image');
+		const puzzles = new Array();
+		let html = '';
+		for (let i = 1; i <= count; i++) {
+			puzzles.push(UIModule.createPuzzle(i, count));
+		}
+		puzzles.sort(() => Math.random() - 0.5);
+		puzzles.forEach( (puzzle) => {
+			puzzleArea.innerHTML += puzzle.outerHTML;
+		});
+		UIModule.appendImagesToCanvases(image);
+		targetArea.style.backgroundImage = "url(" + image.src + ")";
+	},
+
+	createPuzzle: (id, count) => {
+		let imagePart = document.createElement('div');
+		imagePart.setAttribute('class', puzzleClass + ' s' + count);
+		imagePart.setAttribute('id', 'p' + id);
+		imagePart.setAttribute('draggable', true);
+		imagePart.appendChild(UIModule.createCanvasImage(count));
+		return imagePart;
+	},
+
+	createCanvasImage: (count) => {
+		const size = mainDimension / Math.sqrt(count);
+		let canvas = document.createElement('canvas');
+		canvas.setAttribute('width', size);
+		canvas.setAttribute('height', size);
+		return canvas;
+	},
+
+	appendImagesToCanvases: (image) => {
+		const divs = Array.from(puzzleArea.children);
+		const dimension = Math.sqrt(divs.length);
+		const size = mainDimension / dimension;
+		divs.forEach( (div) => {
+			const elId = GameModule.extractId(div.id);
+			const ctx = (div.children[0]).getContext('2d');
+			const row = Math.floor( (elId-1) / dimension);
+			const col = (elId - 1) % dimension;
+			ctx.drawImage(image, size * col, size * row, size, size, 0, 0, size, size);
 		});
 	},
 
@@ -190,7 +185,7 @@ UIModule = {
 
 		if (ev.target.className.startsWith(solutionClass)) {
 			ev.target.appendChild(child);
-			UIModule.applyStatus(child, MainModule.checkIfCorrect(ev.target, child));
+			UIModule.applyStatus(child, GameModule.checkIfCorrect(ev.target, child));
 			UIModule.showGameOver();
 		} else if (ev.target.id === 'puzzles-area') {
 			ev.target.appendChild(child);
@@ -241,6 +236,20 @@ UIModule = {
 		targetArea.innerHTML = '';
 	},
 
+	setTargetImage: (image) => {
+		targetImage.src = image;
+	},
+
+
+};
+
+EventModule = {
+	newGameEvent: () => {
+		const countIndex = document.getElementById('puzzles-count').selectedIndex;
+		const puzzlesCount = document.getElementsByTagName('option')[countIndex].value;
+		GameModule.setUpGame(puzzlesCount);
+	},
+
 	resetGameEvent: () => {
 		const backgrounds = Array.from(document.getElementsByClassName(solutionClass));
 		backgrounds.forEach( (bg) => {
@@ -255,19 +264,9 @@ UIModule = {
 		UIModule.hideMessages();
 	},
 
-	newGameEvent: () => {
-		const countIndex = document.getElementById('puzzles-count').selectedIndex;
-		const puzzlesCount = document.getElementsByTagName('option')[countIndex].value;
-		GameModule.setUpGame(puzzlesCount);
-	},
-
 	chooseImageEvent: () => {
 		UIModule.showElement(imagesArea);
 		UIModule.hideElement(optionsArea);
-	},
-
-	setTargetImage: (image) => {
-		targetImage.src = image;
 	},
 
 	imageClickedEvent: (event) => {
@@ -280,10 +279,8 @@ UIModule = {
 		UIModule.hideElement(imagesArea);
 		UIModule.showElement(optionsArea);
 	}
-
-
 };
 
 
-MainModule.init();
+GameModule.init();
 
