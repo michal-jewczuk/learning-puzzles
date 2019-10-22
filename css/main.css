@@ -10,7 +10,7 @@ body {
 }
 
 #solution-area {
-	border: 2px solid blue;
+	border: 3px solid blue;
 	width: 420px;
 	height: 420px;
 	display: flex;
@@ -88,22 +88,68 @@ body {
 }
 
 .invisible {
-	display: none;
+	display: none !important;
 }
 
-#options-section {
+#options-area {
 	width: 600px;
 	background-color: #eeeeee;
 	margin: 2em auto;
 	display: flex;
+	flex-direction: column;
+	align-content: space-around;
+}
+
+#options-area div {
+	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	justify-content: space-between;
+	justify-content: center;
+	align-items: baseline;
+	margin: 0.5em;
+}
+
+#options-area div * {
+	margin: 0 0.5em;
+}
+
+#options-area div p {
+	line-height: 70px;
+}
+
+#target-image {
+	height: 70px;
+	border: 1px solid #000000;
+	margin-left: 10px;
+	margin-bottom: -35px !important;
 }
 
 #result-section {
 	width: 600px;
 	margin: 2em auto;
 	text-align: center;
+}
+
+#images-area {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 500px;
+	margin: 2em auto;
+	border: 3px solid #000000;
+	padding: 1em;
+}
+
+#images-area div {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+#images-area div img {
+	width: 70px;
+	border: 2px solid #000000;
+	margin: 0.3em;
 }
 

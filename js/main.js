@@ -1,12 +1,21 @@
 
 const targetArea = document.getElementById('solution-area');
 const puzzleArea = document.getElementById('puzzles-area');
-const solutionClass = 'solution-background';
-const puzzleClass = 'playable';
+const imagesArea = document.getElementById('images-area');
+const optionsArea = document.getElementById('options-area');
+
 const newGameButton = document.getElementById('new-game');
 const resetButton = document.getElementById('reset');
+const chooseButton = document.getElementById('choose-image');
+const uploadButton = document.getElementById('upload-image');
+const cancelChooseButton = document.getElementById('cancel-choose');
+
 const infoWinner = document.getElementById('info-winner');
 const infoLooser = document.getElementById('info-looser');
+const targetImage = document.getElementById('target-image');
+
+const solutionClass = 'solution-background';
+const puzzleClass = 'playable';
 const mainDimension = 420;
 
 MainModule = {
@@ -87,7 +96,7 @@ GameModule = {
 	},
 
 	createCanvasImage: (count) => {
-		const size = 420 / Math.sqrt(count);
+		const size = mainDimension / Math.sqrt(count);
 		let canvas = document.createElement('canvas');
 		canvas.setAttribute('width', size);
 		canvas.setAttribute('height', size);
@@ -97,7 +106,7 @@ GameModule = {
 	appendImagesToCanvases: (image) => {
 		const divs = Array.from(puzzleArea.children);
 		const dimension = Math.sqrt(divs.length);
-		const size = 420 / dimension;
+		const size = mainDimension / dimension;
 		divs.forEach( (div) => {
 			const elId = MainModule.extractId(div.id);
 			const ctx = (div.children[0]).getContext('2d');
@@ -137,6 +146,13 @@ UIModule = {
 	registerEvents: () => {
 		resetButton.addEventListener('click', UIModule.resetGameEvent);
 		newGameButton.addEventListener('click', UIModule.newGameEvent);
+		chooseButton.addEventListener('click', UIModule.chooseImageEvent);
+		cancelChooseButton.addEventListener('click', UIModule.cancelChooseEvent);
+		const images = Array.from(document.getElementsByClassName('image-to-choose'));
+		images.forEach( (image) => {
+			image.addEventListener('click', UIModule.imageClickedEvent);
+		});
+		UIModule.hideElement(imagesArea);
 	},
 
 	registerGameEvents: () => {
@@ -244,12 +260,30 @@ UIModule = {
 		const countIndex = document.getElementById('puzzles-count').selectedIndex;
 		const puzzlesCount = document.getElementsByTagName('option')[countIndex].value;
 		GameModule.setUpGame(puzzlesCount);
+	},
+
+	chooseImageEvent: () => {
+		UIModule.showElement(imagesArea);
+		UIModule.hideElement(optionsArea);
+	},
+
+	setTargetImage: (image) => {
+		targetImage.src = image;
+	},
+
+	imageClickedEvent: (event) => {
+		UIModule.setTargetImage(event.target.src);
+		UIModule.hideElement(imagesArea);
+		UIModule.showElement(optionsArea);
+	},
+
+	cancelChooseEvent: () => {
+		UIModule.hideElement(imagesArea);
+		UIModule.showElement(optionsArea);
 	}
 
+
 };
-
-
-
 
 
 MainModule.init();

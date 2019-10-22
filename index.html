@@ -29,7 +29,10 @@
 
 			</section>
 
-			<section id="options-section">
+			<section>
+
+			<section id="options-area">
+			<div>
 				<label for="puzzles-count">Choose number of puzzles:
 				<select id="puzzles-count">
 					<option value="4">4</option>
@@ -41,9 +44,28 @@
 				</select></label>
 				<button class="puzzle-button" id="new-game">New game</button>
 				<button class="puzzle-button" id="reset">Reset solution</button>
+			</div>
+			<div>
+				<button class="puzzle-button" id="choose-image">Choose preloaded image</button>
+				<button class="puzzle-button" id="upload-image">Upload image</button>
+				<p>Choosen image:
+				<img id="target-image" src="img/puzzle1.png">
+				</p>
+			</div>
 			</section>
 
-			<img id="target-image" src="img/puzzle1.png" width="130px">
+			<section id="images-area">
+				<p>Click an image to set it as a game target.
+				<button class="puzzle-button" id="cancel-choose">Cancel</button>
+				</p>
+				<div>
+				<img class="image-to-choose" src="img/puzzle1.png">
+				<img class="image-to-choose" src="img/puzzle2.png">
+				</div>
+			</section>
+
+			</section>
+
 
 		</article>
 
