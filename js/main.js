@@ -7,6 +7,7 @@ const newGameButton = document.getElementById('new-game');
 const resetButton = document.getElementById('reset');
 const infoWinner = document.getElementById('info-winner');
 const infoLooser = document.getElementById('info-looser');
+const mainDimension = 420;
 
 MainModule = {
 
@@ -45,9 +46,11 @@ MainModule = {
 GameModule = {
 
 	setUpGame: (count) => {
+		UIModule.removeAllPuzzles();
 		GameModule.createTargetGrid(count);
 		GameModule.createPuzzles(count);
 		UIModule.registerGameEvents();
+		UIModule.hideMessages();
 	},
 
 	createTargetGrid: (count) => {
@@ -64,17 +67,43 @@ GameModule = {
 		let html = '';
 		for (let i = 1; i <= count; i++) {
 			puzzles.push(GameModule.createPuzzle(i, count));
-
 		}
 		puzzles.sort(() => Math.random() - 0.5);
-		puzzleArea.innerHTML = puzzles.reduce((e1, e2) => e1 + e2);
+		puzzles.forEach( (puzzle) => {
+			puzzleArea.innerHTML += puzzle.outerHTML;
+		});
+		GameModule.appendImagesToCanvases();
 	},
 
 	createPuzzle: (id, count) => {
-		let html = '<div class="' + puzzleClass + ' s' + count + '" id="p' + id + '" draggable="true">';
-		html += '<p>#' + id + '</p>';
-		html += '</div>';
-		return html;
+		let imagePart = document.createElement('div');
+		imagePart.setAttribute('class', puzzleClass + ' s' + count);
+		imagePart.setAttribute('id', 'p' + id);
+		imagePart.setAttribute('draggable', true);
+		imagePart.appendChild(GameModule.createCanvasImage(count));
+		return imagePart;
+	},
+
+	createCanvasImage: (count) => {
+		const size = 420 / Math.sqrt(count);
+		let canvas = document.createElement('canvas');
+		canvas.setAttribute('width', size);
+		canvas.setAttribute('height', size);
+		return canvas;
+	},
+
+	appendImagesToCanvases: () => {
+		const image = document.getElementById('target-image');
+		const divs = Array.from(puzzleArea.children);
+		const dimension = Math.sqrt(divs.length);
+		const size = 420 / dimension;
+		divs.forEach( (div) => {
+			const elId = MainModule.extractId(div.id);
+			const ctx = (div.children[0]).getContext('2d');
+			const row = Math.floor( (elId-1) / dimension);
+			const col = (elId - 1) % dimension;
+			ctx.drawImage(image, size * col, size * row, size, size, 0, 0, size, size);
+		});
 	},
 
 	checkIfCompleted: () => {
@@ -186,6 +215,16 @@ UIModule = {
 		element.classList.add('visible');
 	},
 
+	hideMessages: () => {
+		UIModule.hideElement(infoWinner);
+		UIModule.hideElement(infoLooser);
+	},
+
+	removeAllPuzzles: () => {
+		puzzleArea.innerHTML = '';
+		targetArea.innerHTML = '';
+	},
+
 	resetGameEvent: () => {
 		const backgrounds = Array.from(document.getElementsByClassName(solutionClass));
 		backgrounds.forEach( (bg) => {
@@ -197,8 +236,7 @@ UIModule = {
 				puzzleArea.appendChild(child);
 			}
 		});
-		UIModule.hideElement(infoWinner);
-		UIModule.hideElement(infoLooser);
+		UIModule.hideMessages();
 	},
 
 	newGameEvent: () => {
