@@ -22,8 +22,7 @@ MainModule = {
 
 	init: () => {
 		UIModule.registerEvents();
-		UIModule.hideElement(infoWinner);
-		UIModule.hideElement(infoLooser);
+		UIModule.hideMessages();
 	},
 
 	checkIfCorrect: (target, child) => {
@@ -35,19 +34,6 @@ MainModule = {
 	extractId: (name) => {
 		return parseInt(name.slice(1));
 	},
-
-	showGameOver: () => {
-		const gameStatus = GameModule.checkIfCompleted();
-		if (gameStatus[1]) {
-			if (gameStatus[0]) {
-				UIModule.showElement(infoWinner);
-				UIModule.hideElement(infoLooser);
-			} else {
-				UIModule.showElement(infoLooser);
-				UIModule.hideElement(infoWinner);
-			}
-		}
-	}
 
 
 };
@@ -172,6 +158,19 @@ UIModule = {
 		});
 	},
 
+	showGameOver: () => {
+		const gameStatus = GameModule.checkIfCompleted();
+		if (gameStatus[1]) {
+			if (gameStatus[0]) {
+				UIModule.showElement(infoWinner);
+				UIModule.hideElement(infoLooser);
+			} else {
+				UIModule.showElement(infoLooser);
+				UIModule.hideElement(infoWinner);
+			}
+		}
+	},
+
 	allowDrop: (ev) => {
 		ev.preventDefault();
 	},
@@ -192,7 +191,7 @@ UIModule = {
 		if (ev.target.className.startsWith(solutionClass)) {
 			ev.target.appendChild(child);
 			UIModule.applyStatus(child, MainModule.checkIfCorrect(ev.target, child));
-			MainModule.showGameOver();
+			UIModule.showGameOver();
 		} else if (ev.target.id === 'puzzles-area') {
 			ev.target.appendChild(child);
 			UIModule.applyNone(child);
