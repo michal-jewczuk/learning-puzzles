@@ -63,6 +63,7 @@ GameModule = {
 	},
 
 	createPuzzles: (count) => {
+		const image = document.getElementById('target-image');
 		const puzzles = new Array();
 		let html = '';
 		for (let i = 1; i <= count; i++) {
@@ -72,7 +73,8 @@ GameModule = {
 		puzzles.forEach( (puzzle) => {
 			puzzleArea.innerHTML += puzzle.outerHTML;
 		});
-		GameModule.appendImagesToCanvases();
+		GameModule.appendImagesToCanvases(image);
+		targetArea.style.backgroundImage = "url(" + image.src + ")";
 	},
 
 	createPuzzle: (id, count) => {
@@ -92,8 +94,7 @@ GameModule = {
 		return canvas;
 	},
 
-	appendImagesToCanvases: () => {
-		const image = document.getElementById('target-image');
+	appendImagesToCanvases: (image) => {
 		const divs = Array.from(puzzleArea.children);
 		const dimension = Math.sqrt(divs.length);
 		const size = 420 / dimension;

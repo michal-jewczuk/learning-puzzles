@@ -1,5 +1,5 @@
 body {
-	width: 900px;
+	width: 950px;
 	margin: 0 auto;
 }
 
@@ -16,36 +16,41 @@ body {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	margin-top: 20px;
 }
 
 .solution-background {
 	box-sizing: border-box;
 	border: 1px solid white;
-	background-color: #eeeeee;
+	background-color: rgba(255, 255, 255, 0.7);
 }
 
 #puzzles-area {
-	margin-left: 50px;
-	border: 2px solid green;
+	margin-left: 30px;
 	display: flex;
-	width: 420px;
-	height: 420px;
+	width: 460px;
+	height: 460px;
 	flex-direction: column;
 	flex-wrap: wrap;
+	background-color: #555555;
+	align-content: space-around;
+	justify-content: space-around;
 }
 
 .playable {
 	box-sizing: border-box;
 	background-color: #cccccc;
 	border: 1px solid white;
+	opacity: 1;
 }
 
 .correct {
-	border: 2px solid green;
+	border: 0px solid green;
 }
 
 .incorrect {
-	border: 2px solid red;
+	border: 0px solid red;
+	opacity: 1 !important;
 }
 
 .s4 {
