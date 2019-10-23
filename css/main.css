@@ -1,6 +1,31 @@
 body {
-	width: 950px;
+	width: 916px;
 	margin: 0 auto;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+	text-align: center;
+	color: #dd0031;
+	width: 90%;
+	margin: 0 auto;
+	border-bottom: 2px solid #000000;
+	border-left: 2px solid #ffffff;
+	border-right: 2px solid #ffffff;
+	padding: 0.5em 0;
+}
+
+footer {
+	width: 40%;
+	margin-left: 60%;
+	border-top: 1px solid #dd0031;
+	margin-bottom: 1em;
+}
+
+footer p {
+	text-align: right;
+	margin: 0;
+	padding: 0;
 }
 
 #playable-section {
@@ -10,7 +35,7 @@ body {
 }
 
 #solution-area {
-	border: 3px solid blue;
+	border: 3px solid #dd0031;
 	width: 420px;
 	height: 420px;
 	display: flex;
@@ -53,6 +78,29 @@ body {
 	opacity: 1 !important;
 }
 
+.end-message {
+	position: fixed;
+	top: 250px;
+	left: 10%;
+	width: 80%;
+	padding: 2em 0;
+	text-align: center;
+	font-size: 1.4em;
+	font-weight: bold;
+	background-color: #ffffff;
+	border-radius: 10px;
+}
+
+.success {
+	box-shadow: 10px 10px 5px green;
+	border: 2px solid green;
+}
+
+.failure {
+	box-shadow: 10px 10px 5px #dd0031;
+	border: 2px solid #dd0031;
+}
+
 .s4 {
 	width: 210px;
 	height: 210px;
@@ -91,10 +139,16 @@ body {
 	display: none !important;
 }
 
-#options-area {
-	width: 600px;
-	background-color: #eeeeee;
+.options {
+	width: 80%;
 	margin: 2em auto;
+	background-color: #eeeeee;
+	border: 3px solid #000000;
+	border-radius: 5px;
+	padding: 0.5em;
+}
+
+#options-area {
 	display: flex;
 	flex-direction: column;
 	align-content: space-around;
@@ -134,10 +188,6 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 500px;
-	margin: 2em auto;
-	border: 3px solid #000000;
-	padding: 1em;
 }
 
 #images-area div {
@@ -151,5 +201,19 @@ body {
 	width: 70px;
 	border: 2px solid #000000;
 	margin: 0.3em;
+}
+
+.puzzle-button {
+	font-size: 0.9em;
+	padding: 0.4em 0.6em;
+	border: 2px solid #dd0031;
+	border-radius: 5px;
+	background-color: #555555;
+	color: #ffffff;
+	outline: 0;
+}
+
+.puzzle-button:hover {
+	opacity: 0.7;
 }
 

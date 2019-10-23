@@ -15,8 +15,8 @@
 		<article>
 
 			<section id="result-section">
-				<p id="info-winner">Congratulations! Your solution is correct.</p>
-				<p id="info-looser">Sorry! Your solution is incorrect.</p>
+				<p id="info-winner" class="end-message success">Congratulations! Your solution is correct.</p>
+				<p id="info-looser" class="end-message failure">Sorry! Your solution is incorrect.</p>
 			</section>
 
 			<section id="playable-section">
@@ -31,7 +31,7 @@
 
 			<section>
 
-			<section id="options-area">
+			<section id="options-area" class="options">
 			<div>
 				<label for="puzzles-count">Choose number of puzzles:
 				<select id="puzzles-count">
@@ -46,17 +46,17 @@
 				<button class="puzzle-button" id="reset">Reset solution</button>
 			</div>
 			<div>
-				<button class="puzzle-button" id="choose-image">Choose preloaded image</button>
-				<button class="puzzle-button" id="upload-image">Upload image</button>
-				<p>Choosen image:
+				<p>Current image:
 				<img id="target-image" src="img/puzzle1.png">
 				</p>
+				<button class="puzzle-button" id="choose-image">Choose preloaded image</button>
+				<button class="puzzle-button" id="upload-image">Upload image</button>
 			</div>
 			</section>
 
-			<section id="images-area">
-				<p>Click an image to set it as a game target.
-				<button class="puzzle-button" id="cancel-choose">Cancel</button>
+			<section id="images-area" class="options">
+				<p>Click an image to set it as a game target or 
+				<button class="puzzle-button" id="cancel-choose" role="button">Cancel</button>
 				</p>
 				<div>
 				<img class="image-to-choose" src="img/puzzle1.png">
