@@ -24,7 +24,7 @@ GameModule = {
 	init: () => {
 		UIModule.registerEvents();
 		UIModule.hideMessages();
-		UIModule.drawTargetImage(targetImagePreview);
+		UIModule.drawFromPreloadedImage(targetImagePreview);
 	},
 
 	checkIfCorrect: (target, child) => {
@@ -82,6 +82,7 @@ UIModule = {
 			image.addEventListener('click', EventModule.imageClickedEvent);
 		});
 		UIModule.hideElement(imagesArea);
+		uploadButton.addEventListener('change', EventModule.uploadImageEvent);
 	},
 
 	registerGameEvents: () => {
@@ -238,14 +239,32 @@ UIModule = {
 		targetArea.innerHTML = '';
 	},
 
-	setTargetImage: (image) => {
-		targetImagePreview.src = image;
-		UIModule.drawTargetImage(targetImagePreview);
+	setTargetImage: (image, loaded) => {
+		if (loaded) {
+			UIModule.drawFromUploadedFile(image);
+			targetImagePreview.src = window.URL.createObjectURL(image);
+		} else {
+			targetImagePreview.src = image;
+			UIModule.drawFromPreloadedImage(targetImagePreview);
+		}
 	},
 
-	drawTargetImage: (image) => {
+	drawFromPreloadedImage: (image) => {
 		const ctx = targetImage.getContext('2d');
 		ctx.drawImage(image, 0, 0, mainDimension, mainDimension);
+	},
+
+	drawFromUploadedFile: (file) => {
+		let FR = new FileReader();
+		FR.onload = (e) => {
+			let img = new Image();
+			img.addEventListener('load', () => {
+				const ctx = targetImage.getContext('2d');
+				ctx.drawImage(img, 0, 0, mainDimension, mainDimension);
+			});
+			img.src = e.target.result;
+		};
+		FR.readAsDataURL(file);
 	}
 
 
@@ -278,7 +297,7 @@ EventModule = {
 	},
 
 	imageClickedEvent: (event) => {
-		UIModule.setTargetImage(event.target.src);
+		UIModule.setTargetImage(event.target.src, false);
 		UIModule.hideElement(imagesArea);
 		UIModule.showElement(optionsArea);
 	},
@@ -286,6 +305,13 @@ EventModule = {
 	cancelChooseEvent: () => {
 		UIModule.hideElement(imagesArea);
 		UIModule.showElement(optionsArea);
+	},
+
+	uploadImageEvent: (event) => {
+		if (uploadButton.files.length > 0) {
+			const file = uploadButton.files[0];
+			UIModule.setTargetImage(file, true);
+		}
 	}
 };
 

@@ -173,6 +173,7 @@ footer p {
 
 #target-image-preview {
 	height: 70px;
+	width: 70px;
 	border: 1px solid #000000;
 	margin-left: 10px;
 	margin-bottom: -35px !important;
