@@ -171,7 +171,7 @@ footer p {
 	line-height: 70px;
 }
 
-#target-image {
+#target-image-preview {
 	height: 70px;
 	border: 1px solid #000000;
 	margin-left: 10px;
@@ -214,6 +214,6 @@ footer p {
 }
 
 .puzzle-button:hover {
-	opacity: 0.7;
+	opacity: 0.8;
 }
 

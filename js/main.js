@@ -13,6 +13,7 @@ const cancelChooseButton = document.getElementById('cancel-choose');
 const infoWinner = document.getElementById('info-winner');
 const infoLooser = document.getElementById('info-looser');
 const targetImage = document.getElementById('target-image');
+const targetImagePreview = document.getElementById('target-image-preview');
 
 const solutionClass = 'solution-background';
 const puzzleClass = 'playable';
@@ -23,6 +24,7 @@ GameModule = {
 	init: () => {
 		UIModule.registerEvents();
 		UIModule.hideMessages();
+		UIModule.drawTargetImage(targetImagePreview);
 	},
 
 	checkIfCorrect: (target, child) => {
@@ -109,7 +111,6 @@ UIModule = {
 	},
 
 	createPuzzles: (count) => {
-		const image = document.getElementById('target-image');
 		const puzzles = new Array();
 		let html = '';
 		for (let i = 1; i <= count; i++) {
@@ -119,8 +120,9 @@ UIModule = {
 		puzzles.forEach( (puzzle) => {
 			puzzleArea.innerHTML += puzzle.outerHTML;
 		});
-		UIModule.appendImagesToCanvases(image);
-		targetArea.style.backgroundImage = "url(" + image.src + ")";
+		UIModule.appendImagesToCanvases(targetImage);
+		targetArea.style.backgroundImage = "url(" + targetImagePreview.src + ")";
+		targetArea.style.backgroundSize = "420px 420px";
 	},
 
 	createPuzzle: (id, count) => {
@@ -237,8 +239,14 @@ UIModule = {
 	},
 
 	setTargetImage: (image) => {
-		targetImage.src = image;
+		targetImagePreview.src = image;
+		UIModule.drawTargetImage(targetImagePreview);
 	},
+
+	drawTargetImage: (image) => {
+		const ctx = targetImage.getContext('2d');
+		ctx.drawImage(image, 0, 0, mainDimension, mainDimension);
+	}
 
 
 };
